@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "strictNullChecks": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitAny": true,
+    "target": "es2020",
+    "noUnusedLocals": true,
+    "noImplicitOverride": true,
+    "useUnknownInCatchVariables": true,
+    "importsNotUsedAsValues": "error",
+    "esModuleInterop": true
+  },
+  "include": ["./src/**/*.ts"]
+}
