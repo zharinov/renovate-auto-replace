@@ -5,32 +5,20 @@ export function collectPatchesForBlob(
   blob: Blob,
   replacements: Replace[]
 ): void {
-  const indices = Array<number>(replacements.length).fill(0);
-
   const { content } = blob;
   for (let charIdx = 0; charIdx < content.length; charIdx += 1) {
-    const contentChar: string = content[charIdx]!;
-
+    const contentSlice = content.slice(charIdx);
     for (let replIdx = 0; replIdx < replacements.length; replIdx += 1) {
       const replace: Replace = replacements[replIdx]!;
-      const replCharIdx: number = indices[replIdx]!;
-      const replChar: string = replace.from[replCharIdx]!;
-
-      if (contentChar === replChar) {
-        indices[replIdx] += 1;
-
-        if (indices[replIdx] === replace.from.length) {
-          indices[replIdx] = 0;
-
-          const patch: Patch = Object.freeze({
-            blob: blob.key,
-            start: charIdx - replCharIdx,
-            end: charIdx + 1,
-            from: replace.from,
-            to: replace.to,
-          });
-          accumulator[replIdx]!.push(patch);
-        }
+      if (contentSlice.startsWith(replace.from)) {
+        const patch: Patch = Object.freeze({
+          blob: blob.key,
+          start: charIdx,
+          end: charIdx + replace.from.length,
+          from: replace.from,
+          to: replace.to,
+        });
+        accumulator[replIdx]!.push(patch);
       }
     }
   }
